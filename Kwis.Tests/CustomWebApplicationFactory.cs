@@ -16,19 +16,11 @@ namespace Kwis.Tests
         {
             builder.ConfigureAppConfiguration(config =>
             {
-                /*var integrationConfig = new ConfigurationBuilder()
+                var integrationConfig = new ConfigurationBuilder()
                   .AddJsonFile("integrationsettings.json")
-                  .AddEnvironmentVariables()
                   .Build();
 
-                var connString = integrationConfig.GetConnectionString("db");
-                var dbName = $"test_db_{Guid.NewGuid()}";
-
-                //this.DbContextSettings = new MongoDbContextSettings(connString, dbName);
-                //this.DbContext = new MongoDbContext(this.DbContextSettings);
-
                 config.AddConfiguration(integrationConfig);
-                */
             });
 
             builder.ConfigureTestServices(services =>

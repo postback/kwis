@@ -1,7 +1,7 @@
 ﻿{
   "DatabaseSettings": {
     "ConnectionString": "mongodb://localhost:27017",
-    "DatabaseName": "Kwis",
+    "DatabaseName": "Kwis_integration_tests",
     "CollectionNameQuiz": "Quiz"
   }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Kwis.Models;
 using Kwis.Services;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
@@ -6,11 +8,11 @@ using Xunit;
 
 namespace Kwis.Tests
 {
-    public class DatabaseFixture : IDisposable
+    public class DatabaseFixture : IAsyncLifetime
     {
         public IDatabaseSettings DatabaseSettings { get; private set; }
 
-        public DatabaseFixture()
+        public Task InitializeAsync()
         {
             //Db = new SqlConnection("MyConnectionString");
 
@@ -22,21 +24,32 @@ namespace Kwis.Tests
                   .Build();
 
             this.DatabaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
-            this.DatabaseSettings.DatabaseName = this.DatabaseSettings.DatabaseName + "_" + Guid.NewGuid();
 
             var client = new MongoClient(this.DatabaseSettings.ConnectionString);
             var database = client.GetDatabase(this.DatabaseSettings.DatabaseName);
+
+            database.CreateCollection(this.DatabaseSettings.CollectionNameQuiz);
+            var quizes = database.GetCollection<Quiz>(this.DatabaseSettings.CollectionNameQuiz);
+
+            for (int i = 1; i <= 7; i++)
+            {
+                quizes.InsertOneAsync(new Quiz()
+                {
+                    Name = $"Quiz {i}"
+                });
+            }
+
+            return Task.CompletedTask;
         }
 
-        public void Dispose()
+        public Task DisposeAsync()
         {
             // ... clean up test data from the database ...
             var client = new MongoClient(this.DatabaseSettings.ConnectionString);
             client.DropDatabase(this.DatabaseSettings.DatabaseName);
+            return Task.CompletedTask;
         }
-
-        
-}
+    }
 
 [CollectionDefinition("Database collection")]
 public class DatabaseCollection : ICollectionFixture<DatabaseFixture>

@@ -20,7 +20,7 @@ namespace Kwis.Tests
         [Fact]
         public async Task BasicEndPointTest()
         {
-            var response = await client.GetAsync("/api/quiz/all");
+            var response = await client.GetAsync("/api/quiz");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var forecast = JsonConvert.DeserializeObject<Quiz[]>(
