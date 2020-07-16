@@ -44,17 +44,17 @@ namespace Kwis.Tests
         public void Should_throw_for_unknown_Id()
         {
             //Act
-            var task = service.Get(ObjectId.GenerateNewId().ToString());
+            var task = service.Get(Guid.NewGuid());
 
             //Assert
             task.Result.Should().BeNull();
         }
 
         [Fact]
-        public void Should_be_ok_for_known_Id()
+        public async Task Should_be_ok_for_known_IdAsync()
         {
             //Arrange
-            fixture.ReInitialize();
+            await fixture.ReInitialize();
 
             //Act
             Quiz quiz = GetFirstQuizFromTheCurrentDataset();
@@ -96,7 +96,7 @@ namespace Kwis.Tests
             var newQuiz = new Quiz
             {
                 Name = "Unknown",
-                Id = ObjectId.GenerateNewId().ToString()
+                Id = Guid.NewGuid()
             };
 
             //Act

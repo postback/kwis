@@ -32,7 +32,7 @@ namespace Kwis.Services
         }
             
 
-        public async Task<Quiz> Get(string id)
+        public async Task<Quiz> Get(Guid id)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Kwis.Services
             return quiz;
         }
 
-        public async Task<bool> Update(string id, Quiz quizToUpdate)
+        public async Task<bool> Update(Guid id, Quiz quizToUpdate)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Kwis.Services
             return await Remove(quizToRemove.Id);
         }
 
-        public async Task<bool> Remove(string id)
+        public async Task<bool> Remove(Guid id)
         {
             try
             {

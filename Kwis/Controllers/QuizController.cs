@@ -35,7 +35,7 @@ namespace Kwis.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Quiz>> GetById(string id)
+        public async Task<ActionResult<Quiz>> GetById(Guid id)
         {
             var quiz = await quizService.Get(id);
 
@@ -48,7 +48,7 @@ namespace Kwis.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> Update(string id, Quiz quiz)
+        public async Task<ActionResult<bool>> Update(Guid id, Quiz quiz)
         {
             if (id != quiz.Id)
             {
@@ -83,7 +83,7 @@ namespace Kwis.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(string id)
+        public async Task<ActionResult<bool>> Delete(Guid id)
         {
             var quiz = await quizService.Get(id);
 
