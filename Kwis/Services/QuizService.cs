@@ -18,11 +18,32 @@ namespace Kwis.Services
             quizes = database.GetCollection<Quiz>(settings.CollectionNameQuiz);
         }
 
-        public async Task<IEnumerable<Quiz>> Get() =>
-            await quizes.Find(quiz => true).ToListAsync();
+        public async Task<IEnumerable<Quiz>> Get()
+        {
+            try
+            {
+                return await quizes.Find(quiz => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+            
 
-        public async Task<Quiz> Get(string id) =>
-            await quizes.Find<Quiz>(quiz => quiz.Id == id).SingleOrDefaultAsync();
+        public async Task<Quiz> Get(string id)
+        {
+            try
+            {
+                return await quizes.Find<Quiz>(quiz => quiz.Id == id).SingleOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
 
         public async Task<Quiz> Create(Quiz quiz)
         {

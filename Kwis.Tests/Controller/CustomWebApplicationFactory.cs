@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using Kwis.Models;
 using Kwis.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,10 +7,21 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kwis.Tests
+namespace Kwis.Tests.Controller
 {
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
+        public Action<IServiceCollection> Registrations { get; set; }
+
+        public CustomWebApplicationFactory() : this(null)
+        {
+        }
+
+        public CustomWebApplicationFactory(Action<IServiceCollection> registrations = null)
+        {
+            Registrations = registrations ?? (collection => { });
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureAppConfiguration(config =>
@@ -25,11 +35,12 @@ namespace Kwis.Tests
 
             builder.ConfigureTestServices(services =>
             {
-                //services.AddTransient<IQuizService, QuizService>();
+                Registrations?.Invoke(services);
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
             });
+
         }
     }
 }
